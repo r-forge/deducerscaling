@@ -437,11 +437,14 @@
 		winMenuAddItem("Psych", "Reliability", "deducer('Reliability')")
 		winMenuAddItem("Psych", "Intraclass correlation", "deducer('Intraclass correlation')")
 	}else if(.jgr){
-		menus <- jgr.getMenuNames()
-		index <- which(menus=="Packages & Data")
-		if(length(index)==0) 
-			index <- 1
-		jgr.insertMenu("Psych",index)
+		if(exists("jgr.getMenuNames") && exists("jgr.insertMenu")){
+			menus <- jgr.getMenuNames()
+			index <- which(menus=="Packages & Data")
+			if(length(index)==0) 
+				index <- 1
+			jgr.insertMenu("Psych",index)
+		}else
+			jgr.addMenu("Psych")
 		
 		jgr.addMenuItem("Psych", "Factor analysis", "deducer('Factor analysis')")
 		jgr.addMenuItem("Psych", "Reliability", "deducer('Reliability')")
