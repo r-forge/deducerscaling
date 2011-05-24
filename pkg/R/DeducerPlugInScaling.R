@@ -266,15 +266,6 @@
 	dialog
 }
 
-.getNewFactorAnalysisDialog <- function(){
-	if(!exists(".newFactorAnalysisDialog")){
-		ex <- globalenv()
-		#make factor analysis dialog
-		.newFactorAnalysisDialog <- .makeNewFactorAnalysisDialog()
-		assign(".newFactorAnalysisDialog",.newFactorAnalysisDialog,ex)		
-	}
-	return(.newFactorAnalysisDialog)
-}
 
 ###################################### 
 
@@ -333,7 +324,7 @@
 		
 		
 		## model ########
-		cmd1<- paste("pr.model1<-alpha(pr.model") 
+		cmd1<- paste("pr.model1<-psych::alpha(pr.model") 
 		
 		cmd1<-paste(cmd1, ")")
 		
@@ -352,15 +343,6 @@
 	dialog
 }
 
-.getNewReliabilityDialog <- function(){
-	if(!exists(".newReliabilityDialog")){
-		ex <- globalenv()
-		#make factor analysis dialog
-		.newReliabilityDialog <- .makeNewReliabilityDialog()
-		assign(".newReliabilityDialog",.newReliabilityDialog,ex)		
-	}
-	return(.newReliabilityDialog)
-}
 
 
 
@@ -415,22 +397,18 @@
 	rfd
 }
 
-.getICCDialog <- function(){
-	if(!exists(".iccDialog")){
-		ex <- globalenv()
-		#make factor analysis dialog
-		.iccDialog <- .makeICCDialog()
-		assign(".iccDialog",.iccDialog,ex)		
-	}
-	return(.iccDialog)
-}
+
 
 .First.lib <- function(libname, pkgname) { 
 
+	.registerDialog("Factor analysis",.makeNewFactorAnalysisDialog)
+	.registerDialog("Reliability",.makeNewReliabilityDialog)
+	.registerDialog("Intraclass correlation",.makeICCDialog)
+	
 	deducer.addMenu("Psych")
-	deducer.addMenuItem("Factor analysis",,".getNewFactorAnalysisDialog()$run()","Psych")
-	deducer.addMenuItem("Reliability",,".getNewReliabilityDialog()$run()","Psych")	
-	deducer.addMenuItem("Intraclass correlation",,".getICCDialog()$run()","Psych")	
+	deducer.addMenuItem("Factor analysis",,".getDialog('Factor analysis')$run()","Psych")
+	deducer.addMenuItem("Reliability",,".getDialog('Reliability')$run()","Psych")	
+	deducer.addMenuItem("Intraclass correlation",,".getDialog('Intraclass correlation')$run()","Psych")	
 	if(.windowsGUI){
 		winMenuAdd("Psych")
 		winMenuAddItem("Psych", "Factor analysis", "deducer('Factor analysis')")
