@@ -48,13 +48,13 @@
 	textArea$setLowerBound(1)
 
 	#options for sorting factor loadings
-	transBoxesp <- new(CheckBoxesWidget,c("Sorted by size","Cut loadings less than:"))
+	transBoxesp <- new(CheckBoxesWidget,c("Sorted by size","Cut loadings less than:","Save scores"))
 	transBoxesp$setTitle("Loadings")
-	addComponent(subDialog, transBoxesp,550,625,760, 100)
+	addComponent(subDialog, transBoxesp,450,625,760, 100)
 
 	# value of loadings suppressed
 	textArea0 <- new(TextFieldWidget)
-	addComponent(subDialog, textArea0,670,740,755, 600)
+	addComponent(subDialog, textArea0,570,740,655, 600)
 	textArea0$setDefaultModel(c("0.2"))
 	textArea0$setNumeric(TRUE)
 	textArea0$setLowerBound(0)
@@ -195,14 +195,16 @@
 		# PCA ###################
 		cmd7<- {cmd7<- paste("pr.model1<-principal(pr.model,") 
 		cmd7<-paste(cmd7, "nfactors=", state$`Number of factors`, ",")
-		cmd7<-paste(cmd7, "rotate=", rota)
+		cmd7<-paste(cmd7, "rotate=", rota, ",")
+		cmd7<-paste(cmd7, "scores=TRUE")
 		cmd7<-paste(cmd7, ")")}
 		
 		# Factor analysis ###################
 		cmd8<- {cmd8<- paste("pr.model1<-fa(pr.model,") 
 		cmd8<-paste(cmd8, "nfactors=", textArea$getModel(), ",")
 		cmd8<-paste(cmd8, "rotate=", rota, ",")
-		cmd8<-paste(cmd8, "fm=", extra)
+		cmd8<-paste(cmd8, "fm=", extra, ",")
+		cmd8<-paste(cmd8, "scores=TRUE")
 		cmd8<-paste(cmd8, ")")}
 		
 		
@@ -210,17 +212,20 @@
 		ifelse("principal components analysis" %in%state$Extraction, cmd11<- paste (cmd7),cmd11 <- paste (cmd8))
 		
 		# Loadings options ###################
-		if(sum(nchar(state$Loadings))== 0)
+		if (sum(nchar(state$Loadings)) == 0 || sum(nchar(state$Loadings)) == 11)
 			{cmd12<-paste("print(pr.model1)")}
 		
-		if(sum(nchar(state$Loadings))== 14)
+		if (sum(nchar(state$Loadings)) == 14 || sum(nchar(state$Loadings)) == 25)
 			{cmd12<-paste("print.psych(pr.model1,sort=T)")}
 		
-		if(sum(nchar(state$Loadings))== 23)
+		if (sum(nchar(state$Loadings)) == 23 || sum(nchar(state$Loadings)) == 34)
 			{cmd12<-paste("print.psych(pr.model1,cut=",textArea0$getModel(),")")}
 		
-		if(sum(nchar(state$Loadings))== 37)
+		if (sum(nchar(state$Loadings)) == 37 || sum(nchar(state$Loadings)) == 48)
 			{cmd12<-paste("print.psych(pr.model1,sort=T, cut=",textArea0$getModel(),")")}
+		
+		# Save scores option ###################
+		cm12.b <- if ("Save scores" %in% state$Loadings) paste(ddga,".1 <- cbind(",ddga,", pr.model1$scores)", sep="") else ""
 		
 		# Plot options ###################
 		if(sum(nchar(state$Plots))== 29)		
@@ -247,16 +252,16 @@
 		
 		# execute sequence ###################
 		if(sum(nchar(state$Plots))== 29)
-			comm<-paste(cmd,"\n", cmd11,"\n",cmd12,"\n",plot12,"\n",plot22,"\n",cmd01,"\n",cmd02,"\n",cmd000,"\n",cmd13)
+			comm<-paste(cmd,"\n", cmd11,"\n",cmd12,"\n",cm12.b,"\n",plot12,"\n",plot22,"\n",cmd01,"\n",cmd02,"\n",cmd000,"\n",cmd13)
 		
 		if (sum(nchar(state$Plots))== 12)
-			comm<-paste(cmd,"\n",cmd11,"\n",cmd12,"\n",plot1,"\n",cmd1,"\n",cmd000,"\n",cmd13)
+			comm<-paste(cmd,"\n",cmd11,"\n",cmd12,"\n",cm12.b,"\n",plot1,"\n",cmd1,"\n",cmd000,"\n",cmd13)
 		
 		if (sum(nchar(state$Plots))== 17)
-			comm<-paste(cmd,"\n",cmd11,"\n",cmd12,"\n",plot1,"\n",cmd2,"\n",cmd000,"\n",cmd13)
+			comm<-paste(cmd,"\n",cmd11,"\n",cmd12,"\n",cm12.b,"\n",plot1,"\n",cmd2,"\n",cmd000,"\n",cmd13)
 		
 		if (sum(nchar(state$Plots))== 0)
-			comm<-paste(cmd,"\n",cmd11,"\n",cmd12,"\n",cmd000,"\n",cmd13)
+			comm<-paste(cmd,"\n",cmd11,"\n",cmd12,"\n",cm12.b,"\n",cmd000,"\n",cmd13)
 		
 		execute(comm)
 	}
@@ -399,7 +404,12 @@
 
 
 
-.First.lib <- function(libname, pkgname) { 
+.onLoad <- function(libname, pkgname) { 
+
+	#if deducer gui is not running, do minimal load
+	deducerLoaded <- try(.deducer == .jnull(),silent=TRUE)
+	if(inherits(deducerLoaded,"try-error") || deducerLoaded)
+		return(NULL)
 
 	.registerDialog("Factor analysis",.makeNewFactorAnalysisDialog)
 	.registerDialog("Reliability",.makeNewReliabilityDialog)
