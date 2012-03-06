@@ -50,11 +50,11 @@
 	#options for sorting factor loadings
 	transBoxesp <- new(CheckBoxesWidget,c("Sorted by size","Cut loadings less than:","Save scores"))
 	transBoxesp$setTitle("Loadings")
-	addComponent(subDialog, transBoxesp,450,625,760, 100)
+	addComponent(subDialog, transBoxesp,450,625,760,100)
 
 	# value of loadings suppressed
 	textArea0 <- new(TextFieldWidget)
-	addComponent(subDialog, textArea0,570,740,655, 600)
+	addComponent(subDialog, textArea0,570,770,655,630)
 	textArea0$setDefaultModel(c("0.2"))
 	textArea0$setNumeric(TRUE)
 	textArea0$setLowerBound(0)
@@ -194,7 +194,7 @@
 		
 		# PCA ###################
 		cmd7<- {cmd7<- paste("pr.model1<-principal(pr.model,") 
-		cmd7<-paste(cmd7, "nfactors=", state$`Number of factors`, ",")
+		cmd7<-paste(cmd7, "nfactors=", textArea$getModel(), ",")
 		cmd7<-paste(cmd7, "rotate=", rota, ",")
 		cmd7<-paste(cmd7, "scores=TRUE")
 		cmd7<-paste(cmd7, ")")}
