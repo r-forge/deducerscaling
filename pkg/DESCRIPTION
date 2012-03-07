@@ -2,7 +2,7 @@ Package: DeducerPlugInScaling
 Version: 0.0-8
 Date: 2012-03-05
 Title: Reliability and factor analysis plugin
-Author: Alberto Mirisola, Helios De Rosario-Martinez and Ian Fellows
+Author: Alberto Mirisola, Ian Fellows and Helios De Rosario-Martinez
 Maintainer: Alberto Mirisola <alberto.mirisola@gmail.com>
 Description: A Deducer plug-in for factor analysis and reliability
         analysis, using psych, GPArotation and mvnormtest packages.
