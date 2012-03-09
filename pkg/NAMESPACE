@@ -4,5 +4,6 @@ import(
   psych,
   GPArotation,
   mvnormtest,
-  irr
+  irr,
+  klaR
 )
