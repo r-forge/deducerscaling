@@ -299,7 +299,7 @@
 	addComponent(dialog, variableList,100,900,450, 420)
  
 	# Help button:
-	dialog$addHelpButton("pmwiki.php?n=Main.CronbachAlpha")
+	dialog$addHelpButton("pmwiki.php?n=Main.ReliabilityAnalysis")
 
 	#make sure at least two variables are selected###################			
 	.ReliabilityCheckFunction <- function(state){
