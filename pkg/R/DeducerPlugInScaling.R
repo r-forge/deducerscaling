@@ -208,7 +208,8 @@
 		cmd7<- {cmd7<- paste("pr.model1<-principal(pr.model,") 
 		cmd7<-paste(cmd7, "nfactors=", textArea$getModel(), ",")
 		cmd7<-paste(cmd7, "rotate=", rota, ",")
-		cmd7<-paste(cmd7, "covar=", cova)
+		cmd7<-paste(cmd7, "covar=", cova,",")
+		cmd7<-paste(cmd7, "scores=TRUE")
 		cmd7<-paste(cmd7, ")")}
 		
 		# Factor analysis ###################
