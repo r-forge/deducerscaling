@@ -585,7 +585,7 @@
 		cmd <- paste(cmd, "ldaModel\n")
 		# Self-classification needed
 		if (any(c( "Original data" %in% state$ctables,
-			c("Centroids", "Statistics", "Structre matrix") %in% state$dfs,
+			c("Centroids", "Statistics", "Structre matrix","Plot") %in% state$dfs,
 			c("Classification","A posteriori probabilities","Discriminant functions") %in% state$export ))){
 			cmd <- paste(cmd, paste("ldaPredict <- predict(ldaModel, ", state$data, ")\n"))
 			cmd <- paste(cmd, "ldaFunctions <- ldaPredict$x\n")
